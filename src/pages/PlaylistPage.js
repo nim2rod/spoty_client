@@ -69,7 +69,6 @@ const PlaylistPage = () => {
   }
 
   const isFavorite = (track) => {
-    console.log('favorites: ',favorites)
     return favorites.some(fav => fav.id === track.id);
   }
 
