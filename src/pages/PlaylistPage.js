@@ -63,12 +63,14 @@ const PlaylistPage = () => {
     dispatch(addFavoriteTrack(track));
   }
 
-  const handleRemoveFavorite = (trackId) => {
-    dispatch(removeFavoriteTrack({ id: trackId }));
+  const handleRemoveFavorite = (track) => {
+    // dispatch(removeFavoriteTrack({ id: trackId }));
+    dispatch(removeFavoriteTrack(track));
   }
 
-  const isFavorite = (trackId) => {
-    return favorites.some(fav => fav.id === trackId);
+  const isFavorite = (track) => {
+    console.log('favorites: ',favorites)
+    return favorites.some(fav => fav.id === track.id);
   }
 
   return (
@@ -110,10 +112,10 @@ const PlaylistPage = () => {
                   Open in Spotify
                 </a>
                 {
-                  isFavorite(item.track.id) ? (
-                      <button onClick={() => handleRemoveFavorite(item.track.id)}>Remove from Favorites</button>
+                  isFavorite(item.track) ? (
+                      <button onClick={() => handleRemoveFavorite(item.track)}>Remove from Favorites</button>
                   ) : (
-                    <button onClick={() => handleAddFavorite(item.track.id)}>Add to Favorites</button>   
+                    <button onClick={() => handleAddFavorite(item.track)}>Add to Favorites</button>   
                   )
                 }
               </li>

@@ -10,6 +10,7 @@ const favoritesSlice = createSlice({
   reducers: {
     addFavoriteTrack(state, action) {
       state.favoriteTracks.push(action.payload);
+      console.log('add favorite track',[...state.favoriteTracks] )
     },
     removeFavoriteTrack(state, action) {
       state.favoriteTracks = state.favoriteTracks.filter(
