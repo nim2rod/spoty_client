@@ -1,18 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  playlists: [],
   favoriteTracks: [],
-  loading: false,
 };
 
-const playlistSlice = createSlice({
-  name: 'playlist',
+const favoritesSlice = createSlice({
+  name: 'favorites',
   initialState,
   reducers: {
-    setPlaylists(state, action) {
-      state.playlists = action.payload;
-    },
     addFavoriteTrack(state, action) {
       state.favoriteTracks.push(action.payload);
     },
@@ -20,18 +15,15 @@ const playlistSlice = createSlice({
       state.favoriteTracks = state.favoriteTracks.filter(
         (track) => track.id !== action.payload.id
       );
-    },
-    setLoading(state, action) {
-      state.loading = action.payload;
-    },
+    }
   },
 });
 
 export const {
-  setPlaylists,
   addFavoriteTrack,
-  removeFavoriteTrack,
-  setLoading,
-} = playlistSlice.actions;
+  removeFavoriteTrack
+} = favoritesSlice.actions;
 
-export default playlistSlice.reducer;
+export const selectFavorites = (state) => state.favorites.favoriteTracks;
+
+export default favoritesSlice.reducer;

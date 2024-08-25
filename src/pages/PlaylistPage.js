@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
 import SpotyService from '../services/spotyService';
+import {addFavoriteTrack, removeFavoriteTrack, selectFavorites} from '../store/favoritesSlice'
 
 const PlaylistPage = () => {
   const { id } = useParams();
-  const [playlist, setPlaylist] = useState({ tracks: { items: [] } });
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [sortOrder, setSortOrder] = useState('desc'); // 'asc' or 'desc'
-  const [searchQuery, setSearchQuery] = useState('');
+  const [playlist, setPlaylist] = useState({ tracks: { items: [] } })
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [sortOrder, setSortOrder] = useState('desc')
+  const [searchQuery, setSearchQuery] = useState('')
+  // store
+  const dispatch = useDispatch()
+  const favorites = useSelector(selectFavorites)
 
   useEffect(() => {
     const getPlaylist = async () => {
@@ -35,6 +40,7 @@ const PlaylistPage = () => {
     return <div className="text-center mt-5 text-danger">{error}</div>;
   }
 
+  // Sort and Search
   const handleSort = (()=>{
     setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc' )
   })
@@ -50,7 +56,20 @@ const PlaylistPage = () => {
         return b.track.popularity - a.track.popularity;
       }
       return a.track.popularity - b.track.popularity;
-    })
+  })
+
+  //Favorites
+  const handleAddFavorite = (track) => {
+    dispatch(addFavoriteTrack(track));
+  }
+
+  const handleRemoveFavorite = (trackId) => {
+    dispatch(removeFavoriteTrack({ id: trackId }));
+  }
+
+  const isFavorite = (trackId) => {
+    return favorites.some(fav => fav.id === trackId);
+  }
 
   return (
     <>
@@ -90,6 +109,13 @@ const PlaylistPage = () => {
                 <a href={item.track.external_urls.spotify} target="_blank" rel="noopener noreferrer">
                   Open in Spotify
                 </a>
+                {
+                  isFavorite(item.track.id) ? (
+                      <button onClick={() => handleRemoveFavorite(item.track.id)}>Remove from Favorites</button>
+                  ) : (
+                    <button onClick={() => handleAddFavorite(item.track.id)}>Add to Favorites</button>   
+                  )
+                }
               </li>
             ))}
           </ul>
@@ -97,6 +123,6 @@ const PlaylistPage = () => {
       )}
     </>
   )
-};
+ }
 
 export default PlaylistPage;
