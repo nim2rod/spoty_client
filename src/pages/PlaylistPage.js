@@ -7,6 +7,8 @@ const PlaylistPage = () => {
   const [playlist, setPlaylist] = useState({ tracks: { items: [] } });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [sortOrder, setSortOrder] = useState('desc'); // 'asc' or 'desc'
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const getPlaylist = async () => {
@@ -33,6 +35,23 @@ const PlaylistPage = () => {
     return <div className="text-center mt-5 text-danger">{error}</div>;
   }
 
+  const handleSort = (()=>{
+    setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc' )
+  })
+
+  const handleSearchChange = ((e)=>{
+    setSearchQuery(e.target.value.toLowerCase())
+  })
+
+  const filteredTracks = playlist.tracks.items
+    .filter((item) => item.track.name.toLowerCase().includes(searchQuery))
+    .sort((a, b) => {
+      if (sortOrder === 'desc') {
+        return b.track.popularity - a.track.popularity;
+      }
+      return a.track.popularity - b.track.popularity;
+    })
+
   return (
     <>
       {!playlist.tracks.items ? (
@@ -45,10 +64,22 @@ const PlaylistPage = () => {
           )}
           {playlist.owner && <p>By: {playlist.owner.display_name}</p>}
           {playlist.tracks && <p>Tracks: {playlist.tracks.total}</p>}
-  
+          
+          <input 
+             type="text"
+             placeholder = 'Search for a song'
+             value = {searchQuery}
+             onChange = {handleSearchChange}
+          />
+
+          <button onClick={handleSort}>
+            Sort By Popularaty ({sortOrder})
+          </button>
+
           <h2>Tracks</h2>
           <ul>
-            {playlist.tracks.items?.map((item) => (
+            {/* {playlist.tracks.items?.map((item) => ( */}
+            {filteredTracks.map((item) => (
               <li key={item.track.id}>
                 {item.track.album.images?.[0]?.url && (
                   <img src={item.track.album.images[0].url} alt={item.track.name} />
