@@ -16,12 +16,12 @@ const FavorPage = () => {
   }
 
   return (
-    <div>
-      <h1>Your Library:</h1>
+    <div className="mt-5">
+      <h1 className="mt-3">Your Library:</h1>
       {favoriteTracks.length > 0 ? (
           favoriteTracks.map((track)=>(
             <div key={track.id} className="card m-4">  
-               <h2>{track.name}</h2>
+               <h2 className="p-2">{track.name}</h2>
                <h4>Artists: {track.artists.map((artist) => artist.name).join(', ')}</h4>
                <p>Popularity: {track.popularity}</p>
                <a href={track.external_urls.spotify} 
