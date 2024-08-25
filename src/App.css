@@ -2,9 +2,19 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+li {
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.card {
+  transition: transform 0.2s;
+  /* Animation for hover effect */
+}
+
+.card:hover {
+  transform: scale(1.01);
+  /* Slightly enlarge cards on hover */
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -32,6 +42,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

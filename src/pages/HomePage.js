@@ -34,24 +34,24 @@ const HomePage = () => {
   }
 
   return (
-    <div>
-      <h1>Featured Playlists</h1>
-      <ul>
-        {playlists.map((playlist) => (
-          <li 
-          key={playlist.id} 
-          onClick={()=>navigate(`/playlist/${playlist.id}`)}
-          >
-            <h2>{playlist.name}</h2>
-            <img src={playlist.images[0].url} alt={playlist.name} />
-            <p>By: {playlist.owner.display_name}</p>
-            <p>Tracks: {playlist.tracks.total}</p>
-            <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" >
-                                 Open in Spotify                        </a>
-          </li>
-        ))}
-      </ul>
+    <div className="mt-5">
+    <h1 className="text-center my-4 ">Featured Playlists</h1>
+    <div className="d-flex flex-wrap justify-content-center">
+      {playlists.map((playlist) => (
+        <div key={playlist.id} className="card m-2" style={{ width: "18rem", cursor: "pointer" }} onClick={() => navigate(`/playlist/${playlist.id}`)}>
+          <img src={playlist.images[0].url} className="card-img-top" alt={playlist.name} />
+          <div className="card-body">
+            <h5 className="card-title">{playlist.name}</h5>
+            <p className="card-text">By: {playlist.owner.display_name}</p>
+            <p className="card-text">Tracks: {playlist.tracks.total}</p>
+            <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+              Open in Spotify
+            </a>
+          </div>
+        </div>
+      ))}
     </div>
+  </div>
   )
 }
 

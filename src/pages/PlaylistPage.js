@@ -73,56 +73,117 @@ const PlaylistPage = () => {
   }
 
   return (
-    <>
-      {!playlist.tracks.items ? (
-        <div className="text-center mt-5">Playlist not found.</div>
-      ) : (
-        <div>
-          <h1>{playlist.name}</h1>
-          {playlist.images?.[0]?.url && (
-            <img src={playlist.images[0].url} alt={playlist.name} />
-          )}
-          {playlist.owner && <p>By: {playlist.owner.display_name}</p>}
-          {playlist.tracks && <p>Tracks: {playlist.tracks.total}</p>}
+    // <>
+    //   {!playlist.tracks.items ? (
+    //     <div className="text-center mt-5">Playlist not found.</div>
+    //   ) : (
+    //     <div>
+    //       <h1>{playlist.name}</h1>
+    //       {playlist.images?.[0]?.url && (
+    //         <img src={playlist.images[0].url} alt={playlist.name} />
+    //       )}
+    //       {playlist.owner && <p>By: {playlist.owner.display_name}</p>}
+    //       {playlist.tracks && <p>Tracks: {playlist.tracks.total}</p>}
           
-          <input 
-             type="text"
-             placeholder = 'Search for a song'
-             value = {searchQuery}
-             onChange = {handleSearchChange}
-          />
+    //       <input 
+    //          type="text"
+    //          placeholder = 'Search for a song'
+    //          value = {searchQuery}
+    //          onChange = {handleSearchChange}
+    //       />
 
-          <button onClick={handleSort}>
-            Sort By Popularaty ({sortOrder})
-          </button>
+    //       <button onClick={handleSort}>
+    //         Sort By Popularaty ({sortOrder})
+    //       </button>
 
-          <h2>Tracks</h2>
-          <ul>
-            {/* {playlist.tracks.items?.map((item) => ( */}
-            {filteredTracks.map((item) => (
-              <li key={item.track.id}>
-                {item.track.album.images?.[0]?.url && (
-                  <img src={item.track.album.images[0].url} alt={item.track.name} />
-                )}
-                <h3>{item.track.name}</h3>
-                <p>Artists: {item.track.artists.map((artist) => artist.name).join(', ')}</p>
-                <p>Popularity: {item.track.popularity}</p>
-                <a href={item.track.external_urls.spotify} target="_blank" rel="noopener noreferrer">
+    //       <h2>Tracks</h2>
+    //       <ul>
+    //         {/* {playlist.tracks.items?.map((item) => ( */}
+    //         {filteredTracks.map((item) => (
+    //           <li key={item.track.id}>
+    //             {item.track.album.images?.[0]?.url && (
+    //               <img src={item.track.album.images[0].url} alt={item.track.name} />
+    //             )}
+    //             <h3>{item.track.name}</h3>
+    //             <p>Artists: {item.track.artists.map((artist) => artist.name).join(', ')}</p>
+    //             <p>Popularity: {item.track.popularity}</p>
+    //             <a href={item.track.external_urls.spotify} target="_blank" rel="noopener noreferrer">
+    //               Open in Spotify
+    //             </a>
+    //             {
+    //               isFavorite(item.track) ? (
+    //                   <button onClick={() => handleRemoveFavorite(item.track)}>Remove from Favorites</button>
+    //               ) : (
+    //                 <button onClick={() => handleAddFavorite(item.track)}>Add to Favorites</button>   
+    //               )
+    //             }
+    //           </li>
+    //         ))}
+    //       </ul>
+    //     </div>
+    //   )}
+    // </>
+    <>
+    {!playlist.tracks.items ? (
+      <div className="text-center mt-5">Playlist not found.</div>
+    ) : (
+      <div className="mt-5">
+          <div className="card-body mt-4">
+            <h2 className="card-title mb-2">{playlist.name}</h2>
+            {playlist.images?.[0]?.url && (
+              // <img className="img-fluid" src={playlist.images[0].url} alt={playlist.name} />
+              <div className="text-center mb-3">
+                <img className="img-fluid" src={playlist.images[0].url} alt={playlist.name} style={{ maxHeight: '300px' }} /> 
+              </div>
+              )}
+            {playlist.owner && <h4>By: {playlist.owner.display_name}</h4>}
+            {playlist.tracks && <h5 >Tracks: {playlist.tracks.total}</h5>}
+          </div>
+
+        <div className="d-flex align-items-center px-3">
+            <div className="col-8 pe-2">
+                <input 
+                  type="text"
+                  className="form-control"
+                  placeholder='Search for a song'
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+            </div>
+            <div className="col-4">
+                <button className="btn btn-primary w-100" onClick={handleSort}>
+                  Sort By Popularity ({sortOrder})
+                </button>
+            </div>
+        </div>
+
+        <div className="d-flex flex-wrap justify-content-center">
+          {filteredTracks.map((item) => (
+            <div key={item.track.id} className="card m-2" style={{ width: '18rem' }}>
+              {item.track.album.images?.[0]?.url && (
+                <img className="card-img-top" src={item.track.album.images[0].url} alt={item.track.name} />
+              )}
+              <div className="card-body">
+                <h5 className="card-title">{item.track.name}</h5>
+                <p className="card-text">Artists: {item.track.artists.map(artist => artist.name).join(', ')}</p>
+                <p className="card-text">Popularity: {item.track.popularity}</p>
+                <a href={item.track.external_urls.spotify} className="btn btn-link" target="_blank" rel="noopener noreferrer">
                   Open in Spotify
                 </a>
-                {
-                  isFavorite(item.track) ? (
-                      <button onClick={() => handleRemoveFavorite(item.track)}>Remove from Favorites</button>
-                  ) : (
-                    <button onClick={() => handleAddFavorite(item.track)}>Add to Favorites</button>   
-                  )
-                }
-              </li>
-            ))}
-          </ul>
+                <button
+                  className={`btn ${isFavorite(item.track) ? 'btn-danger' : 'btn-outline-primary'}`}
+                  onClick={() => isFavorite(item.track) ? handleRemoveFavorite(item.track) : handleAddFavorite(item.track)}
+                >
+                  {isFavorite(item.track) ? 'Remove from Favorites' : 'Add to Favorites'}
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
-      )}
-    </>
+      </div>
+    )}
+  </>
+
   )
  }
 
