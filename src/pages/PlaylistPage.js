@@ -1,9 +1,71 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import SpotyService from '../services/spotyService';
 
 const PlaylistPage = () => {
-  return (
-    <div>PlaylistPage</div>
-  )
-}
+  const { id } = useParams();
+  const [playlist, setPlaylist] = useState({ tracks: { items: [] } });
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-export default PlaylistPage
+  useEffect(() => {
+    const getPlaylist = async () => {
+      try {
+        const playlistData = await SpotyService.getPlaylist(id);
+        setPlaylist(playlistData);
+        console.log('playlist', playlist)
+      } catch (error) {
+        setError(error.message);
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getPlaylist();
+  }, [id]);
+
+  if (loading) {
+    return <div className="text-center mt-5">Loading playlist...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center mt-5 text-danger">{error}</div>;
+  }
+
+  return (
+    <>
+      {!playlist.tracks.items ? (
+        <div className="text-center mt-5">Playlist not found.</div>
+      ) : (
+        <div>
+          <h1>{playlist.name}</h1>
+          {playlist.images?.[0]?.url && (
+            <img src={playlist.images[0].url} alt={playlist.name} />
+          )}
+          {playlist.owner && <p>By: {playlist.owner.display_name}</p>}
+          {playlist.tracks && <p>Tracks: {playlist.tracks.total}</p>}
+  
+          <h2>Tracks</h2>
+          <ul>
+            {playlist.tracks.items?.map((item) => (
+              <li key={item.track.id}>
+                {item.track.album.images?.[0]?.url && (
+                  <img src={item.track.album.images[0].url} alt={item.track.name} />
+                )}
+                <h3>{item.track.name}</h3>
+                <p>Artists: {item.track.artists.map((artist) => artist.name).join(', ')}</p>
+                <p>Popularity: {item.track.popularity}</p>
+                <a href={item.track.external_urls.spotify} target="_blank" rel="noopener noreferrer">
+                  Open in Spotify
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </>
+  )
+};
+
+export default PlaylistPage;

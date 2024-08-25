@@ -39,18 +39,13 @@ const SpotyService = {
     },
 
     getFeaturedPlaylists: async () => {
-        console.log('getFeaturedPlaylists have been called')
-
         try {
-            
                 const token = await SpotyService.getAuthToken();
-                console.log('token at getFeaturedPlaylists: ',token)
                 const response = await axios.get(`${API_URL}/browse/featured-playlists`, {
                     headers: {
                     Authorization: `Bearer ${token}`,
                     },
                 });
-                console.log('response at getFeaturedPlaylists: ', response)
                 return response.data.playlists.items;
             } catch (error) {
                 console.error('Error fetching featured playlists:', error.response?.data || error.message);
