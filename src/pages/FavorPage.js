@@ -20,14 +20,18 @@ const FavorPage = () => {
       <h1>Your Library:</h1>
       {favoriteTracks.length > 0 ? (
           favoriteTracks.map((track)=>(
-            <div key={track.id}>  
-               <p>{track.name}</p>
-               <p>Artists: {track.artists.map((artist) => artist.name).join(', ')}</p>
+            <div key={track.id} className="card m-4">  
+               <h2>{track.name}</h2>
+               <h4>Artists: {track.artists.map((artist) => artist.name).join(', ')}</h4>
                <p>Popularity: {track.popularity}</p>
-               <a href={track.external_urls.spotify} target="_blank" rel="noopener noreferrer">
+               <a href={track.external_urls.spotify} 
+               target="_blank" rel="noopener noreferrer"
+               className="btn btn-link"
+               >
                   Open in Spotify
                 </a>
                 <button 
+                className=" btn btn-outline-danger "
                 onClick={() => handleRemoveFavorite(track)}
                 >
                 Remove
