@@ -3,30 +3,37 @@ import SpotyService from '.././services/spotyService';
 
 const HomePage = () => {
    const [playlists, setPlaylists] = useState([]);
-//   const [accessToken, setAccessToken] = useState('');
-   const [error, setError] = useState(null); 
+   const [error, setError] = useState(null);
+   const [loading, setLoading] = useState(true) 
 
 
   useEffect(() => {
     const fetchPlaylists = async () => {
-    //   const token = await SpotyService.getAccessToken();
-    //   setAccessToken(token);
         try {
             const fetchedPlaylists = await SpotyService.getFeaturedPlaylists();
             setPlaylists(fetchedPlaylists);
         } catch (error) {
             setError('Failed to fetch playlists');
             console.error(error);
+        } finally {
+            setLoading(false)
         }
-    };
+    }
 
     fetchPlaylists();
-  }, []);
+  }, [])
+
+  if (loading) {
+    return <div className="text-center mt-5">Loading playlists...</div>;
+}
+
+  if (error) {
+    return <div className="text-center mt-5 text-danger">{error}</div>;
+}
 
   return (
     <div>
       <h1>Featured Playlists</h1>
-      {error && <p>{error}</p>}
       <ul>
         {playlists.map((playlist) => (
           <li key={playlist.id}>
@@ -34,11 +41,13 @@ const HomePage = () => {
             <img src={playlist.images[0].url} alt={playlist.name} />
             <p>By: {playlist.owner.display_name}</p>
             <p>Tracks: {playlist.tracks.total}</p>
+            <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" >
+                                 Open in Spotify                        </a>
           </li>
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
 export default HomePage;
