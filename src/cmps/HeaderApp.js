@@ -22,10 +22,10 @@ const HeaderApp = () => {
           Spoty
         </div>
         <div className="d-flex justify-content-end">
-          <button className="btn" onClick={toggleTheme}>
+          <div className=" navbar-item" onClick={toggleTheme} style={{ cursor: 'pointer', color: '#c6c6c6' }}>
             {theme === 'light' ? 'Dark Theme' : 'Light Theme'}
-          </button>
-          <div className="nav-item" onClick={() => navigate(`/`)} style={{ cursor: 'pointer', color: '#c6c6c6' }}>
+          </div>
+          <div className="nav-item ms-4" onClick={() => navigate(`/`)} style={{ cursor: 'pointer', color: '#c6c6c6' }}>
             Home
           </div>
           <div className="nav-item ms-4" onClick={() => navigate(`/favorites`)} style={{ cursor: 'pointer', color: '#c6c6c6' }}>

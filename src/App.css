@@ -53,10 +53,10 @@ body {
   color: var(--text-color);
 }
 
-.nav-item,
+/* .nav-item,
 .btn {
   color: var(--link-color);
-}
+} */
 
 .header {
   background-color: var(--header-bg-color);
