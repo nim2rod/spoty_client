@@ -24,14 +24,42 @@ li {
 }
 
 .App-header {
-  background-color: #282c34;
+  /* background-color: #282c34; */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  /* color: white; */
+}
+
+:root {
+  --background-color: #282c34;
+  --text-color: white;
+  --header-bg-color: rgb(33, 37, 41);
+  --link-color: #ffffff;
+}
+
+[data-theme="light"] {
+  --background-color: #f4f4f4;
+  --text-color: #2a1919;
+  --header-bg-color: #acaaa6;
+  --link-color: #ffffff;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.nav-item,
+.btn {
+  color: var(--link-color);
+}
+
+.header {
+  background-color: var(--header-bg-color);
 }
 
 .App-link {
